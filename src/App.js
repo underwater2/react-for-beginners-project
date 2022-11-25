@@ -1,35 +1,31 @@
-import { func } from "prop-types";
-import { useState, useEffect } from "react";
-import { isCompositeComponent } from "react-dom/test-utils";
-
-// component : jsx를 return하는 function
-function Hello() {
-  // cleanup function 쓰는 두 가지 방법
-  // 1 -> 보통 이 방법으로 쓴다.
-  useEffect(() => {
-    console.log("hi :)");
-    return () => {
-      // cleanup function : component가 destroy될 때 실행됨
-      console.log("bye :(");
-    };
-  });
-  // 2
-  useEffect(function () {
-    console.log("hi :)");
-    return function () {
-      console.log("bye :(");
-    };
-  }, []);
-  return <h1>Hello</h1>;
-}
+import { useState } from "react";
 
 function App() {
-  const [showing, setShowing] = useState(false);
-  const onClick = () => setShowing((prev) => !prev);
+  const [toDo, setTodo] = useState("");
+  const [toDos, setTodos] = useState([]);
+  const onChange = (event) => setTodo(event.target.value);
+  const onSubmit = (event) => {
+    event.preventDefault(); // submit 되어도 새로고침하지 않도록 함
+    if (toDo === "") {
+      return;
+    }
+    setTodos((currentArray) => [toDo, ...currentArray]);
+    setTodo("");
+  };
+  console.log(toDos);
   return (
     <div>
-      {showing ? <Hello /> : null}
-      <button onClick={onClick}>{showing ? "Hide" : "Show"}</button>
+      <h1>My To Dos ({toDos.length})</h1>
+      <form onSubmit={onSubmit}>
+        <input
+          onChange={onChange}
+          value={toDo}
+          type="text"
+          placeholder="Write your to do..."
+        />
+        <button>Add To Do</button>
+        {/* <form> 안에서 <button> 누르면 submit 이벤트 발생 */}
+      </form>
     </div>
   );
 }
