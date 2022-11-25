@@ -1,33 +1,35 @@
+import { func } from "prop-types";
 import { useState, useEffect } from "react";
+import { isCompositeComponent } from "react-dom/test-utils";
+
+// component : jsx를 return하는 function
+function Hello() {
+  // cleanup function 쓰는 두 가지 방법
+  // 1 -> 보통 이 방법으로 쓴다.
+  useEffect(() => {
+    console.log("hi :)");
+    return () => {
+      // cleanup function : component가 destroy될 때 실행됨
+      console.log("bye :(");
+    };
+  });
+  // 2
+  useEffect(function () {
+    console.log("hi :)");
+    return function () {
+      console.log("bye :(");
+    };
+  }, []);
+  return <h1>Hello</h1>;
+}
 
 function App() {
-  const [counter, setValue] = useState(0);
-  const [keyword, setKeyword] = useState("");
-  const onClick = () => setValue((prev) => prev + 1);
-  const onChange = (event) => setKeyword(event.target.value);
-  console.log("i run all the time");
-  // useEffect : 코드를 언제 실행할지 결정할 수 있음
-  useEffect(() => {
-    console.log("I run only once.");
-  }, []); // 컴포넌트의 첫번째 렌더링에만 해당 함수가 실행되도록 함 (한 번)
-  useEffect(() => {
-    if (keyword !== "" && keyword.length > 5) {
-      console.log("SEARCH FOR", keyword);
-    }
-  }, [keyword]); // keyword가 변화할 때마다 실행된다
-  useEffect(() => {
-    console.log("I run when keyword & counter change");
-  }, [keyword, counter]); // 둘 중 하나가 변화할 때마다 실행된다
+  const [showing, setShowing] = useState(false);
+  const onClick = () => setShowing((prev) => !prev);
   return (
     <div>
-      <input
-        value={keyword}
-        onChange={onChange}
-        type="text"
-        placeholder="Search here..."
-      />
-      <h1>{counter}</h1>
-      <button onClick={onClick}>click me</button>
+      {showing ? <Hello /> : null}
+      <button onClick={onClick}>{showing ? "Hide" : "Show"}</button>
     </div>
   );
 }
