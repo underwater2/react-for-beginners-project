@@ -9,10 +9,11 @@ function App() {
     if (toDo === "") {
       return;
     }
-    setTodos((currentArray) => [toDo, ...currentArray]);
+    setTodos((currentArray) => [toDo, ...currentArray]); // 현재 state를 가져와서
     setTodo("");
   };
   console.log(toDos);
+  console.log(toDos.map((item, index) => <li key={index}>{item}</li>));
   return (
     <div>
       <h1>My To Dos ({toDos.length})</h1>
@@ -26,6 +27,13 @@ function App() {
         <button>Add To Do</button>
         {/* <form> 안에서 <button> 누르면 submit 이벤트 발생 */}
       </form>
+      <hr />
+      <ul>
+        {/* map의 두 번째 argument: array의 index */}
+        {toDos.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
+      </ul>
     </div>
   );
 }
