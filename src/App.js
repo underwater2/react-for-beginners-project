@@ -19,6 +19,10 @@ function App() {
         return response.json();
       })
       .then((json) => {
+        // 여기서 변경한 state 값을 다음 then에서 사용하려고 하면 안된다.
+        // 변경되지 않은 채로 다음 then으로 가서 오류가 뜨더라
+        // 비동기(then) + 비동기(state) 라서 흐름을 파악하기 힘들다
+        // 필요한 때만 state 사용하고 왠만하면 비동기는 붙이지 말기
         setLoading(false);
         setCoins(json);
         setCoinValue(json[0].quotes.USD.price);
