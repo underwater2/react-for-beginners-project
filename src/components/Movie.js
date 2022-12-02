@@ -8,7 +8,7 @@ function Movie({ id, coverImg, title, summary, genres }) {
       <h2>
         <Link to={`/movie/${id}`}>{title}</Link>
       </h2>
-      <p>{summary}</p>
+      <p>{summary.length > 235 ? `${summary.slice(0, 235)}...` : summary}</p>
       <ul>
         {/* {Array.isArray(genres) ? genres.map((g) => <li key={g}>{g}</li>) : null} */}
         {/* return 줄이 한 줄 일 때는 {}를 생략 할 수 있다. */}
